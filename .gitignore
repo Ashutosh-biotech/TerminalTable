@@ -1,0 +1,61 @@
+# =========================
+# Eclipse Files
+# =========================
+.metadata/
+.classpath
+.project
+.settings/
+
+# Eclipse launch configs
+*.launch
+
+# =========================
+# Java Build Files
+# =========================
+bin/
+target/
+build/
+out/
+
+# Compiled class files
+*.class
+
+# =========================
+# Logs
+# =========================
+*.log
+
+# =========================
+# OS Generated Files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# Maven
+# =========================
+.mvn/wrapper/maven-wrapper.jar
+
+# =========================
+# Gradle
+# =========================
+.gradle/
+build/
+
+# =========================
+# IntelliJ
+# =========================
+.idea/
+*.iml
+
+# =========================
+# VS Code
+# =========================
+.vscode/
+
+# =========================
+# Temporary Files
+# =========================
+*.tmp
+*.swp
+*~
