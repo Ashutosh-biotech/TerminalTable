@@ -10,7 +10,24 @@
 
 	<name>Terminal Table</name>
 	<description>CLI table rendering library</description>
-	<url>http://www.example.com</url>
+	<url>https://github.com/Ashutosh-biotech/TerminalTable</url>
+
+	<licenses>
+		<license>
+			<name>MIT License</name>
+			<url>https://opensource.org/licenses/MIT</url>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<name>Ashutosh</name>
+		</developer>
+	</developers>
+	
+	<scm>
+    <connection>scm:git:git://github.com/yourusername/terminal-table.git</connection>
+</scm>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
