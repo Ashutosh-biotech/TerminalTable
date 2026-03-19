@@ -22,11 +22,15 @@
 	<developers>
 		<developer>
 			<name>Ashutosh</name>
+			<email>ashutoshbiotech2020@gmail.com</email>
 		</developer>
 	</developers>
 
 	<scm>
 		<connection>scm:git:git://github.com/ashutosh-java-dev/TerminalTable.git</connection>
+		<developerConnection>
+			scm:git:ssh://github.com/ashutosh-java-dev/TerminalTable.git</developerConnection>
+		<url>https://github.com/ashutosh-java-dev/TerminalTable</url>
 	</scm>
 
 	<properties>
@@ -105,6 +109,16 @@
 				<plugin>
 					<artifactId>maven-project-info-reports-plugin</artifactId>
 					<version>3.6.1</version>
+				</plugin>
+				<plugin>
+					<groupId>org.sonatype.central</groupId>
+					<artifactId>central-publishing-maven-plugin</artifactId>
+					<version>0.9.0</version>
+					<extensions>true</extensions>
+					<configuration>
+						<publishingServerId>central</publishingServerId>
+						<autoPublish>true</autoPublish>
+					</configuration>
 				</plugin>
 			</plugins>
 		</pluginManagement>
