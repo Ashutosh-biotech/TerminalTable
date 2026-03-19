@@ -24,10 +24,10 @@
 			<name>Ashutosh</name>
 		</developer>
 	</developers>
-	
+
 	<scm>
-    <connection>scm:git:git://github.com/yourusername/terminal-table.git</connection>
-</scm>
+		<connection>scm:git:git://github.com/yourusername/terminal-table.git</connection>
+	</scm>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
