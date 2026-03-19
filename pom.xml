@@ -10,7 +10,7 @@
 
 	<name>Terminal Table</name>
 	<description>CLI table rendering library</description>
-	<url>https://github.com/Ashutosh-biotech/TerminalTable</url>
+	<url>https://github.com/ashutosh-java-dev/TerminalTable</url>
 
 	<licenses>
 		<license>
@@ -26,7 +26,7 @@
 	</developers>
 
 	<scm>
-		<connection>scm:git:git://github.com/yourusername/terminal-table.git</connection>
+		<connection>scm:git:git://github.com/ashutosh-java-dev/TerminalTable.git</connection>
 	</scm>
 
 	<properties>
