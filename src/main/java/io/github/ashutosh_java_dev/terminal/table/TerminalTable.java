@@ -6,223 +6,224 @@ import java.util.MissingFormatWidthException;
 
 public class TerminalTable {
 
-    private ArrayList<String> header;
-    private ArrayList<ArrayList<String>> data;
-    private ArrayList<Integer> maxTableLength = new ArrayList<>();
-    private int paddingLeft = 1;
-    private int paddingRight = 1;
-    public boolean nullable = false;
-    private String nullData = "null";
-    private String title;
+	private ArrayList<String> header;
+	private ArrayList<ArrayList<String>> data;
+	private ArrayList<Integer> maxTableLength = new ArrayList<>();
+	private int paddingLeft = 1;
+	private int paddingRight = 1;
+	public boolean nullable = false;
+	private String nullData = "null";
+	private String title;
 
-    public TerminalTable() {
-    }
-
-    public TerminalTable(ArrayList<ArrayList<String>> data) {
-	this.data = data;
-    }
-
-    public TerminalTable(ArrayList<String> header, ArrayList<ArrayList<String>> data) {
-	this.header = header;
-	this.data = data;
-    }
-
-    public void setPadding(int padding) {
-	this.paddingLeft = padding;
-	this.paddingRight = padding;
-    }
-
-    public void setPadding(int paddingLeft, int paddingRight) {
-	this.paddingLeft = paddingLeft;
-	this.paddingRight = paddingRight;
-    }
-
-    private void maxRowLength() {
-
-	int columnCount = 0;
-
-	if (header != null) {
-	    columnCount = header.size();
+	public TerminalTable() {
 	}
 
-	for (ArrayList<String> list : data) {
-	    if (columnCount < list.size()) {
-		columnCount = list.size();
-	    }
+	public TerminalTable(ArrayList<ArrayList<String>> data) {
+		this.data = data;
 	}
 
-	for (int i = 0; i < columnCount; i++) {
-	    maxTableLength.add(0);
+	public TerminalTable(ArrayList<String> header, ArrayList<ArrayList<String>> data) {
+		this.header = header;
+		this.data = data;
 	}
 
-	if (header != null) {
-	    for (int i = 0; i < header.size(); i++) {
-		maxTableLength.set(i, header.get(i).length() + (this.paddingLeft + this.paddingRight));
-	    }
+	public void setPadding(int padding) {
+		this.paddingLeft = padding;
+		this.paddingRight = padding;
 	}
 
-	if (data != null) {
-	    for (ArrayList<String> row : data) {
-		for (int j = 0; j < row.size(); j++) {
-
-		    int length = row.get(j).length() + (this.paddingLeft + this.paddingRight);
-
-		    if (length > maxTableLength.get(j)) {
-			maxTableLength.set(j, length);
-		    }
-		}
-	    }
+	public void setPadding(int paddingLeft, int paddingRight) {
+		this.paddingLeft = paddingLeft;
+		this.paddingRight = paddingRight;
 	}
 
-	if (this.title != null && !this.maxTableLength.isEmpty()) {
-	    int sum = this.maxTableLength.stream().mapToInt(Integer::intValue).sum();
-	    int currentInnerWidth = sum + (this.maxTableLength.size() - 1);
-	    int requiredWidth = this.title.length() + (this.paddingLeft + this.paddingRight);
-	    
-	    if (requiredWidth > currentInnerWidth) {
-		int diff = requiredWidth - currentInnerWidth;
-		int baseAdd = diff / this.maxTableLength.size();
-		int remainder = diff % this.maxTableLength.size();
+	private void maxRowLength() {
 		
-		for (int i = 0; i < this.maxTableLength.size(); i++) {
-		    int add = baseAdd + (i < remainder ? 1 : 0);
-		    this.maxTableLength.set(i, this.maxTableLength.get(i) + add);
+		this.maxTableLength = new ArrayList<>();
+
+		int columnCount = 0;
+
+		if (header != null) {
+			columnCount = header.size();
 		}
-	    }
+
+		for (ArrayList<String> list : data) {
+			if (columnCount < list.size()) {
+				columnCount = list.size();
+			}
+		}
+
+		for (int i = 0; i < columnCount; i++) {
+			maxTableLength.add(0);
+		}
+
+		if (header != null) {
+			for (int i = 0; i < header.size(); i++) {
+				this.maxTableLength.set(i, header.get(i).length() + (this.paddingLeft + this.paddingRight));
+			}
+		}
+
+		if (data != null) {
+			for (ArrayList<String> row : data) {
+				for (int j = 0; j < row.size(); j++) {
+
+					int length = row.get(j).length() + (this.paddingLeft + this.paddingRight);
+
+					if (length > maxTableLength.get(j)) {
+						maxTableLength.set(j, length);
+					}
+				}
+			}
+		}
+
+		if (this.title != null && !this.maxTableLength.isEmpty()) {
+			int sum = this.maxTableLength.stream().mapToInt(Integer::intValue).sum();
+			int currentInnerWidth = sum + (this.maxTableLength.size() - 1);
+			int requiredWidth = this.title.length() + (this.paddingLeft + this.paddingRight);
+
+			if (requiredWidth > currentInnerWidth) {
+				int diff = requiredWidth - currentInnerWidth;
+				int baseAdd = diff / this.maxTableLength.size();
+				int remainder = diff % this.maxTableLength.size();
+
+				for (int i = 0; i < this.maxTableLength.size(); i++) {
+					int add = baseAdd + (i < remainder ? 1 : 0);
+					this.maxTableLength.set(i, this.maxTableLength.get(i) + add);
+				}
+			}
+		}
 	}
-    }
 
-    private void printRow() {
-	System.out.print("+");
-	int sum = this.maxTableLength.stream().mapToInt(Integer::intValue).sum();
-	System.out.print("-".repeat(sum + (this.maxTableLength.size() - 1)));
-	System.out.print("+");
-	System.out.println();
-    }
-
-    private void printHeader() {
-	for (int i = 0; i < this.header.size(); i++) {
-	    System.out.print("|");
-	    System.out.print(" ".repeat(this.paddingLeft));
-	    System.out.print(this.header.get(i));
-	    System.out.print(" ".repeat(this.maxTableLength.get(i) - (this.paddingLeft + this.header.get(i).length())));
+	private void printRow() {
+		System.out.print("+");
+		int sum = this.maxTableLength.stream().mapToInt(Integer::intValue).sum();
+		System.out.print("-".repeat(sum + (this.maxTableLength.size() - 1)));
+		System.out.print("+");
+		System.out.println();
 	}
-	System.out.print("|");
-	System.out.println();
-    }
 
-    private void printData() {
-	for (ArrayList<String> list : data) {
-	    for (int i = 0; i < list.size(); i++) {
+	private void printHeader() {
+		for (int i = 0; i < this.header.size(); i++) {
+			System.out.print("|");
+			System.out.print(" ".repeat(this.paddingLeft));
+			System.out.print(this.header.get(i));
+			System.out.print(" ".repeat(this.maxTableLength.get(i) - (this.paddingLeft + this.header.get(i).length())));
+		}
 		System.out.print("|");
-		System.out.print(" ".repeat(this.paddingLeft));
-		System.out.print(list.get(i));
-		System.out.print(" ".repeat(this.maxTableLength.get(i) - (this.paddingLeft + list.get(i).length())));
-	    }
-	    System.out.print("|");
-	    System.out.println();
+		System.out.println();
 	}
-    }
 
-    private void validate() {
-	for (ArrayList<String> list : data) {
-	    if (list.size() != this.maxTableLength.size()) {
-		if (this.nullable) {
-		    int itemsToAdd = this.maxTableLength.size() - list.size();
-		    for (int i = 0; i < itemsToAdd; i++) {
-			list.add(this.nullData);
-		    }
-		} else {
-		    throw new MissingFormatWidthException(
-			    "Data Provided is not Balanced. Whether Balance it or state nullable true.");
+	private void printData() {
+		for (ArrayList<String> list : data) {
+			for (int i = 0; i < list.size(); i++) {
+				System.out.print("|");
+				System.out.print(" ".repeat(this.paddingLeft));
+				System.out.print(list.get(i));
+				System.out.print(" ".repeat(this.maxTableLength.get(i) - (this.paddingLeft + list.get(i).length())));
+			}
+			System.out.print("|");
+			System.out.println();
 		}
-	    }
 	}
 
-	if (this.header != null) {
-	    if (this.header.size() != this.maxTableLength.size()) {
-		if (this.nullable) {
-		    int itemsToAdd = this.maxTableLength.size() - this.header.size();
-		    for (int i = 0; i < itemsToAdd; i++) {
-			this.header.add(this.nullData);
-		    }
-		} else {
-		    throw new MissingFormatWidthException(
-			    "Data Provided is not Balanced. Whether Balance it or state nullable true.");
+	private void validate() {
+		for (ArrayList<String> list : data) {
+			if (list.size() != this.maxTableLength.size()) {
+				if (this.nullable) {
+					int itemsToAdd = this.maxTableLength.size() - list.size();
+					for (int i = 0; i < itemsToAdd; i++) {
+						list.add(this.nullData);
+					}
+				} else {
+					throw new MissingFormatWidthException(
+							"Data Provided is not Balanced. Whether Balance it or state nullable true.");
+				}
+			}
 		}
-	    }
+
+		if (this.header != null) {
+			if (this.header.size() != this.maxTableLength.size()) {
+				if (this.nullable) {
+					int itemsToAdd = this.maxTableLength.size() - this.header.size();
+					for (int i = 0; i < itemsToAdd; i++) {
+						this.header.add(this.nullData);
+					}
+				} else {
+					throw new MissingFormatWidthException(
+							"Data Provided is not Balanced. Whether Balance it or state nullable true.");
+				}
+			}
+		}
+
 	}
 
-    }
+	public void mutate() {
 
-    public void mutate() {
-
-    }
-
-    private void printTitle() {
-	int sum = this.maxTableLength.stream().mapToInt(Integer::intValue).sum();
-	int innerWidth = sum + (this.maxTableLength.size() - 1);
-        
-	int titleLength = this.title.length();
-	int freeSpace = innerWidth - titleLength;
-	int leftSpace = freeSpace / 2;
-	int rightSpace = freeSpace - leftSpace;
-
-	System.out.print("|");
-	System.out.print(" ".repeat(leftSpace));
-	System.out.print(this.title);
-	System.out.print(" ".repeat(rightSpace));
-	System.out.print("|");
-	System.out.println();
-    }
-
-    public void build() {
-	this.maxRowLength();
-	this.validate();
-	this.printRow();
-	if (this.title != null) {
-	    this.printTitle();
-	    this.printRow();
 	}
-	if (header != null) {
-	    this.printHeader();
-	    this.printRow();
+
+	private void printTitle() {
+		int sum = this.maxTableLength.stream().mapToInt(Integer::intValue).sum();
+		int innerWidth = sum + (this.maxTableLength.size() - 1);
+
+		int titleLength = this.title.length();
+		int freeSpace = innerWidth - titleLength;
+		int leftSpace = freeSpace / 2;
+		int rightSpace = freeSpace - leftSpace;
+
+		System.out.print("|");
+		System.out.print(" ".repeat(leftSpace));
+		System.out.print(this.title);
+		System.out.print(" ".repeat(rightSpace));
+		System.out.print("|");
+		System.out.println();
 	}
-	this.printData();
-	this.printRow();
-    }
 
-    public void setHeader(ArrayList<String> header) {
-	this.header = header;
-    }
-
-    public void setData(ArrayList<ArrayList<String>> data) {
-	this.data = data;
-    }
-
-    public ArrayList<Integer> getMaxTableLength() {
-	return maxTableLength;
-    }
-
-    public void setMaxTableLength(ArrayList<Integer> maxTableLength) {
-	this.maxTableLength = maxTableLength;
-    }
-
-    public void setNullData(String nullData) {
-	if (nullData != null) {
-	    this.nullData = nullData;
-	} else {
-	    System.out.println("Table refused 'null' input !!! ?");
-	    throw new InputMismatchException("nullData can't be null itself, pls reframe from using it.");
+	public void build() {
+		if (this.data == null || this.data.isEmpty()) {
+			throw new NullPointerException("Null data is not allowed");
+		}
+		this.maxRowLength();
+		this.validate();
+		this.printRow();
+		if (this.title != null) {
+			this.printTitle();
+			this.printRow();
+		}
+		if (header != null) {
+			this.printHeader();
+			this.printRow();
+		}
+		this.printData();
+		this.printRow();
 	}
-    }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+	public void setHeader(ArrayList<String> header) {
+		this.header = header;
+	}
 
-    public String getTitle() {
-        return title;
-    }
+	public void setData(ArrayList<ArrayList<String>> data) {
+		this.data = data;
+	}
+
+	public ArrayList<Integer> getMaxTableLength() {
+		return maxTableLength;
+	}
+
+	public void setNullData(String nullData) {
+		if (nullData != null) {
+			this.nullData = nullData;
+		} else {
+			System.out.println("Table refused 'null' input !!! ?");
+			throw new InputMismatchException("nullData can't be null itself, pls reframe from using it.");
+		}
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getTitle() {
+		return title;
+	}
 
 }
