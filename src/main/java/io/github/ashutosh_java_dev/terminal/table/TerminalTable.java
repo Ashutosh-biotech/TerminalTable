@@ -9,8 +9,8 @@ public class TerminalTable {
 	private ArrayList<String> header;
 	private ArrayList<ArrayList<String>> data;
 	private ArrayList<Integer> maxTableLength = new ArrayList<>();
-	private int paddingLeft = 1;
-	private int paddingRight = 1;
+	private int paddingLeft = 0;
+	private int paddingRight = 0;
 	public boolean nullable = false;
 	private String nullData = "null";
 	private String title;
@@ -224,6 +224,22 @@ public class TerminalTable {
 
 	public String getTitle() {
 		return title;
+	}
+	
+	public void addHeader(ArrayList<String> header) {
+		this.header.addAll(header);
+	}
+	
+	public void addHeader(String header) {
+		this.header.add(header);
+	}
+	
+	public void addHeader(int i, String header) {
+		this.header.add(i, header);
+	}
+	
+	public void addHeader(int i, ArrayList<String> header) {
+		this.header.addAll(i, header);
 	}
 
 }
