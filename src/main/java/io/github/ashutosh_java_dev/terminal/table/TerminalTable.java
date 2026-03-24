@@ -38,19 +38,17 @@ public class TerminalTable {
 	}
 
 	private void maxRowLength() {
-		
+
 		this.maxTableLength = new ArrayList<>();
 
 		int columnCount = 0;
 
-		if (header != null) {
+		if (header != null)
 			columnCount = header.size();
-		}
 
 		for (ArrayList<String> list : data) {
-			if (columnCount < list.size()) {
+			if (columnCount < list.size())
 				columnCount = list.size();
-			}
 		}
 
 		for (int i = 0; i < columnCount; i++) {
@@ -69,9 +67,9 @@ public class TerminalTable {
 
 					int length = row.get(j).length() + (this.paddingLeft + this.paddingRight);
 
-					if (length > maxTableLength.get(j)) {
+					if (length > maxTableLength.get(j))
 						maxTableLength.set(j, length);
-					}
+
 				}
 			}
 		}
@@ -134,10 +132,10 @@ public class TerminalTable {
 					for (int i = 0; i < itemsToAdd; i++) {
 						list.add(this.nullData);
 					}
-				} else {
+				} else
 					throw new MissingFormatWidthException(
 							"Data Provided is not Balanced. Whether Balance it or state nullable true.");
-				}
+
 			}
 		}
 
@@ -148,16 +146,11 @@ public class TerminalTable {
 					for (int i = 0; i < itemsToAdd; i++) {
 						this.header.add(this.nullData);
 					}
-				} else {
+				} else 
 					throw new MissingFormatWidthException(
 							"Data Provided is not Balanced. Whether Balance it or state nullable true.");
-				}
 			}
 		}
-
-	}
-
-	public void mutate() {
 
 	}
 
@@ -225,20 +218,33 @@ public class TerminalTable {
 	public String getTitle() {
 		return title;
 	}
-	
+
 	public void addHeader(ArrayList<String> header) {
+		if (header == null) throw new NullPointerException();
 		this.header.addAll(header);
 	}
-	
+
 	public void addHeader(String header) {
+		if (header == null) throw new NullPointerException();
 		this.header.add(header);
 	}
-	
+
 	public void addHeader(int i, String header) {
-		this.header.add(i, header);
+		if (header == null) throw new NullPointerException();
+		if (this.header.size()-1 >= i)
+			this.header.add(i, header);
+		else if (this.nullable) {
+			while (i > this.header.size()) {
+				this.header.add(this.nullData);
+			}
+			this.header.add(i, header);
+		} else {
+			throw new IndexOutOfBoundsException(i + " is out of index. Did you forgot \"nullable = true\"");
+		}
 	}
-	
+
 	public void addHeader(int i, ArrayList<String> header) {
+		if (header == null) throw new NullPointerException();
 		this.header.addAll(i, header);
 	}
 
